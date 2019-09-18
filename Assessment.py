@@ -87,7 +87,7 @@ class Game:
     def __init__(self, name, balance):
         global displayCash
         displayCash = balance
-        displayName = format("Welcome {0}!", name)
+        displayName = ("Welcome {}!".format(name))
         self.game_box = Toplevel()
         self.game_box.configure(bg=bgclr)
         self.game_frame = Frame(self.game_box, bg=bgclr)
@@ -102,7 +102,7 @@ class Game:
         self.gameheading_text = Label(self.game_box, text="Result", font="Arial 16", padx=10, pady=10,  bg=bgclr, fg=fnt2clr)
         self.gameheading_text.grid(row=3, column=1)        
         
-        self.gameheading_text = Label(self.game_box, text=displayCash, font="Arial 16", padx=10, pady=10,  bg=bgclr, fg=fnt2clr)
+        self.gameheading_text = Label(self.game_box, text=("${}".format(displayCash)), font="Arial 16", padx=10, pady=10,  bg=bgclr, fg=fnt2clr)
         self.gameheading_text.grid(row=4, column=1)      
 
         roll1 = ['Unknown'] 
@@ -126,6 +126,27 @@ class Game:
 
         self.button3 = Button(self.game_box, text="Quit", font="Arial 16 bold", bg=fnt2clr, highlightbackground=bgclr, fg=fnt2clr, relief="solid", width="15", command=self.game_box.destroy)
         self.button3.grid(row=5, column=2)
+    
+    def matching(self, card1, card2, card3):
+        if (card1 == card2 == card3):
+            return 3
+        elif (card1 == card2):
+            return 2
+        elif (card1 == card3):
+            return 2
+        elif (card2 == card3):
+            return 2
+        else:
+            return 1
+    
+    def matchingCard(self, card1, card2, card3):
+        if self.matching(card1, card2, card3) == 3:
+            return card1
+        elif self.matching(card1, card2, card3) == 2:
+            if card2 == card3:
+                return card2
+        else:
+            return card1
 
     def roll(self):
         displayCash = 20
@@ -136,7 +157,7 @@ class Game:
         result = "You lost"
         winnings = 0.0
 
-        if matching(roll1, roll2, roll3) == 3:
+        if self.matching(roll1, roll2, roll3) == 3:
             if roll1 == cards[0]: #Jack in the Box x3
                 winnings == 1.0
             elif roll1 == cards[1]: #Star x3
@@ -145,8 +166,8 @@ class Game:
                 winnings == 5.0
             else: #Hear x3
                 winnings == 2.5
-        elif matching(roll1, roll2, roll3) == 2:
-            if matchingCard(roll1, roll2, roll3) == cards[0]:
+        elif self.matching(roll1, roll2, roll3) == 2:
+            if self.matchingCard(roll1, roll2, roll3) == cards[0]:
                 #If there are two of the same and one unicorn, give player
                 #$1.50
                 if roll1 == cards[2]:
@@ -157,7 +178,7 @@ class Game:
                     winnings == 1.5
                 else: #Jack in the Box x2
                     winnings == 0.0
-            elif matchingCard(roll1, roll2, roll3) == cards[1]:
+            elif self.matchingCard(roll1, roll2, roll3) == cards[1]:
                 #If there are two of the same and one unicorn, give player
                 #$1.50
                 if roll1 == cards[2]:
@@ -168,7 +189,7 @@ class Game:
                     winnings == 1.5
                 else:
                     winnings == 1.0 #Star x2
-            elif matchingCard(roll1, roll2, roll3) == cards[2]:
+            elif self.matchingCard(roll1, roll2, roll3) == cards[2]:
                 winning == 2.0 #Unicorn x2 (Don't need to check for third unicorn, as they would get a prize
                                #from another if statement)
             else:
@@ -206,27 +227,7 @@ class Game:
 
         self.gameheading_text = Label(self.game_box, text=displayCash, font="Arial 16", padx=10, pady=10,  bg=bgclr, fg=fnt2clr)
         self.gameheading_text.grid(row=3, column=1)
-        
-    def matching(card1, card2, card3):
-        if (card1 == card2 == card3):
-            return 3
-        elif (card1 == card2):
-            return 2
-        elif (card1 == card3):
-            return 2
-        elif (card2 == card3):
-            return 2
-        else:
-            return 1
-    
-    def matchingCard(card1, card2, card3):
-        if matching(card1, card2, card3) == 3:
-            return card1
-        elif matching(card1, card2, card3) == 2:
-            if card2 == card3:
-                return card2
-        else:
-            return card1
+       
 
 #Main Routine
 if __name__ == "__main__":
